@@ -1,8 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### `adding firebase url`
-In`/burger_builder/src/axios-order.js` your firebase project url
-
 ## Available Scripts
 
 In the project directory, you can run:
