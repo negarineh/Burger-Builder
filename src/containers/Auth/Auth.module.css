@@ -1,5 +1,5 @@
-.ContactData {
-    margin: 20px auto;
+.Auth {
+    margin: 20px;
     width: 80%;
     text-align: center;
     box-shadow: 0 2px 3px #ccc;
@@ -9,11 +9,11 @@
 }
 
 /*.Input {*/
-    /*display: block;*/
+/*display: block;*/
 /*}*/
 
 @media (min-width: 600px) {
-    .ContactData {
+    .Auth {
         width: 500px;
         margin-left: 25%;
     }

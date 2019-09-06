@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Aux from '../../hoc/Aux/Aux';
+import Ax from '../../hoc/Ax/Ax';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -11,7 +11,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-order';
 import * as actions from '../../store/actions';
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
 
   state = {
     purchasing: false,
@@ -65,7 +65,13 @@ class BurgerBuilder extends Component {
   //   };
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true});
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true});
+    } else {
+      this.props.onSetAuthRedirectPath('/checkout');
+      this.props.history.push('/auth');
+    }
+
   };
 
   purchaseCancelHandler = () => {
@@ -101,7 +107,7 @@ class BurgerBuilder extends Component {
     let burger = this.props.error ? <p>Ingredients cannot be rendered!</p> : <Spinner/>;
     if (this.props.ings) {
       burger = (
-        <Aux>
+        <Ax>
           <Burger ingredients={this.props.ings} />
           <BuildControls
             ingredientsAdded={this.props.onIngredientAdded}
@@ -109,8 +115,9 @@ class BurgerBuilder extends Component {
             disabled={disabledInfo}
             price={this.props.price}
             purchasable={this.updatePurchaseState(this.props.ings)}
-            ordered={this.purchaseHandler}/>
-        </Aux>
+            ordered={this.purchaseHandler}
+            isAuth={this.props.isAuthenticated}/>
+        </Ax>
       );
       orderSummery = <OrderSummery
         ingredients={this.props.ings}
@@ -124,12 +131,12 @@ class BurgerBuilder extends Component {
     // }
 
     return (
-      <Aux>
+      <Ax>
         <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
           {orderSummery}
         </Modal>
         {burger}
-      </Aux>
+      </Ax>
     );
   }
 }
@@ -139,6 +146,7 @@ const mapStateToProps = state => {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
     error: state.burgerBuilder.error,
+    isAuthenticated: state.auth.token !== null,
   }
 };
 
@@ -148,6 +156,7 @@ const mapDispatchToProps = dispatch => {
     onIngredientRemoved: (ingName) => dispatch(actions.removeIngredient(ingName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.purchaseInit()),
+    onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path)),
   }
 };
 

@@ -1,35 +1,33 @@
-import React, { Component } from 'react';
-import Aux from '../../../hoc/Aux/Aux';
+import React from 'react';
+import Ax from '../../../hoc/Ax/Ax';
 import Button from '../../UI/Button/Button';
 
-class OrderSummery extends Component {
+const orderSummery = (props) => {
   // This doesn't need to be a functional component
-  render() {
-    const ingredientSummery = Object.keys(this.props.ingredients)
+    const ingredientSummery = Object.keys(props.ingredients)
       .map(igKey => {
         return (
           <li key={igKey}>
         <span style={{ textTransform: 'capitalize'}}>
           {igKey}:</span>
-            {this.props.ingredients[igKey]}
+            {props.ingredients[igKey]}
           </li>
         )
       });
 
     return (
-      <Aux>
+      <Ax>
         <h3>Your Order</h3>
         <p>A delicious burger with the following ingredients</p>
         <ul>
           {ingredientSummery}
         </ul>
-        <p><strong>Total Price: {Number.parseFloat(this.props.price).toFixed(2)}</strong></p>
+        <p><strong>Total Price: {Number.parseFloat(props.price).toFixed(2)}</strong></p>
         <p>Continue to Checkout?</p>
-        <Button btnType="Danger" clicked={this.props.purchaseCancelled}>CANCEL</Button>
-        <Button btnType="Success" clicked={this.props.purchaseContinued}>CONTINUE</Button>
-      </Aux>
+        <Button btnType="Danger" clicked={props.purchaseCancelled}>CANCEL</Button>
+        <Button btnType="Success" clicked={props.purchaseContinued}>CONTINUE</Button>
+      </Ax>
     )
-  }
 }
 
-export default OrderSummery;
+export default orderSummery;
